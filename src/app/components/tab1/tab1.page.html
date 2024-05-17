@@ -1,17 +1,59 @@
-<ion-header [translucent]="true">
+
+<ion-header>
   <ion-toolbar>
-    <ion-title>
-      Tab 1
-    </ion-title>
+    <ion-title class="ion-text-center">User Details</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Home</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<!-- @if (userDetails$ | async; as user) {   -->
+  <ion-content>
+    <ion-card>
+      <ion-card-header>
+        <!-- <ion-card-title>{{ user.firstName }} {{ user.lastName }}</ion-card-title> -->
+        <ion-card-title>Daniel Guerrero</ion-card-title>
+        <!-- <ion-card-subtitle>{{ user.title }}</ion-card-subtitle> -->
+        <ion-card-subtitle>Engineer</ion-card-subtitle>
+      </ion-card-header>
+      
+      <ion-card-content>
+        <ion-list lines="none">
+          <ion-item>
+            <ion-label>Service Provider Code</ion-label>
+            <!-- <ion-text>{{ user.serviceProviderCode }}</ion-text> -->
+            <ion-text>1234</ion-text>
+          </ion-item>
+          
+          <ion-item>
+            <ion-label>Email</ion-label>
+            <!-- <ion-text>{{ user.email }}</ion-text> -->
+            <ion-text type="mail">dguerrero&#64;accela.com</ion-text>
+          </ion-item>
+          
+          <ion-item>
+            <ion-label>ID</ion-label>
+            <ion-text>100</ion-text>
+            <!-- <ion-text>{{ user.id }}</ion-text> -->
+          </ion-item>
+          
+          <ion-item>
+            <ion-label>Phone</ion-label>
+            <ion-text>+50687360481</ion-text>
+            <!-- <ion-text>{{ user.phone }}</ion-text> -->
+          </ion-item>
+          <ion-item>
+            <ion-label>Agency</ion-label>
+            <ion-text>Mobile</ion-text>
+            <!-- <ion-text>{{ user.department.agency }}</ion-text> -->
+          </ion-item>
+          <ion-item>
+            <ion-label>Provider</ion-label>
+            <ion-text>Sea-otters</ion-text>
+            <!-- <ion-text>{{ user.department.serviceProviderCode }}</ion-text> -->
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+  </ion-content>
+  
+<!-- } -->
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
-</ion-content>

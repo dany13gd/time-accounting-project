@@ -11,10 +11,14 @@ export class AuthInterceptor implements HttpInterceptor {
   private token = '';
   constructor(private loginStore: Store<LoginState>) { }
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    debugger
   this.loginStore.pipe(select(selectorToken)).subscribe((token) => 
-    this.token = token.token
+    {
+      console.log(token);
+      this.token = token.access_token
+    }
   );
-    if (this.token) {
+    if (this.token !== '') {
       req = req.clone({
         headers: req.headers.set('Authorization', this.token)
       });

@@ -5,20 +5,39 @@ import * as actions from './app.actions';
 // Definir la interfaz del estado
 export  const loginState: LoginState = {
     isLoading: false,
-    token: {token: ''},
+    token: {access_token: '', refresh_token: '', expires_in: 0, token_type: ''},
     error: ''
 }
 
 export  const accountingState: AccountingState = {
     isLoading: false,
-    Accounting: {},
+    Accounting: [{
+        duration: '',
+        startTime: '',
+        endTime: '',
+        group: {
+            text: ''
+        },
+        type: {
+            text: ''
+        }
+    
+    }],
     error: ''
 }
 
 
 export  const userState: UserState = {
     isLoading: false,
-    user: {},
+    user: {
+        firstname: '',
+        lastName: '',
+        email: '',
+        role: '',
+        serviceProviderCode: '',
+        id: '',
+        phone: ''
+    },
     error: ''
 }
 
@@ -35,7 +54,7 @@ export const loginReducer = createReducer(loginState,
     on(actions.LOGIN_SUCCESS, (state, action ) => ({
         ...state,
          isLoading: false, 
-         token: action.token
+         token: {access_token: action.token, refresh_token: '', expires_in: 0, token_type: ''},
         })),
     on(actions.LOGIN_FAILURE, (state, action) => ({
         ...state,
@@ -55,7 +74,7 @@ export const AccountingReducer = createReducer(accountingState,
     on(actions.TIMEACCOUNTING_SUCCESS, (state, action ) => ({
         ...state,
         isLoading: false, 
-        data: action.data,
+        data: action,
         })),
     on(actions.TIMEACCOUNTING_FAILURE, (state, action) => ({
         ...state,
@@ -72,7 +91,7 @@ export const UserReducer = createReducer(userState,
     on(actions.USER_SUCCESS, (state, action ) => ({
         ...state,
         isLoading: false, 
-        data: action.data,
+        data: action,
         })),
     on(actions.USER_FAILURE, (state, action) => ({
         ...state,

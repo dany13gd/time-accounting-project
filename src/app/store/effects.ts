@@ -5,6 +5,10 @@ import { of } from 'rxjs';
 import * as StoreActions from '../store/app.actions';
 import { UtilsService } from 'src/app/core/utils.service';
 import { LoginService } from 'src/app/core/login.service';
+import { Router } from '@angular/router';
+import { UserState } from './app-state';
+import { Store } from '@ngrx/store';
+
 
 @Injectable()
 export class Effects {
@@ -14,7 +18,12 @@ export class Effects {
         mergeMap(({ username, password, environment }) => {
           return this.loginSevice.getToken(username, password, environment).pipe(
             map((token) => {
-              return StoreActions.LOGIN_SUCCESS({ token: token.access_token  });
+
+              // this.userStore.dispatch(StoreActions.USER_REQUEST());
+              this.router.navigate(['/tabs/tab1']);
+              console.log(token);
+              
+              return StoreActions.LOGIN_SUCCESS({ token: token.access_token, refresh_token: token.refresh_token, expires_in: token.expires_in, token_type: token.token_type});
             }),
             catchError(error => {
               return of(StoreActions.LOGIN_FAILURE({ error }));
@@ -28,7 +37,18 @@ getAccounting$ = createEffect(() =>
     mergeMap(() => {
         return this.utils.getTimeAccounting().pipe(
             map((data) => {
-                return StoreActions.TIMEACCOUNTING_SUCCESS({data: data.result})}), 
+              console.log(data);
+                return StoreActions.TIMEACCOUNTING_SUCCESS({Accounting: [{
+                  duration: data.duration,
+                  startTime: data.startTime,
+                  endTime: data.endTime,
+                  group: {
+                      text: data.group.text,
+                  },
+                  type: {
+                      text: data.type.type,
+                  },
+              }]})}), 
         catchError((error) => 
             of(StoreActions.TIMEACCOUNTING_FAILURE({error}))));
     })));
@@ -38,12 +58,21 @@ getUser$ = createEffect(() =>
     mergeMap((data) => {
         return this.utils.getUserDetails().pipe(
           map((data) => {
-           return StoreActions.USER_SUCCESS({data: data.result})}), 
+            // debugger
+           return StoreActions.USER_SUCCESS({user: {
+            firstname: data.firstname,
+            lastName: data.lastName,
+            email: data.email,
+            role: data.role,
+            serviceProviderCode: data.serviceProviderCode,
+            id: data.id,
+            phone: data.phone,
+        }})}), 
         catchError((error) => 
             of(StoreActions.USER_FAILURE({error}))));
     })));    
 
-    constructor(private actions$: Actions, private utils: UtilsService, private loginSevice: LoginService) {}
+    constructor(private actions$: Actions, private utils: UtilsService, private loginSevice: LoginService, private router: Router, private userStore: Store<UserState>,) {}
 }
 
 
